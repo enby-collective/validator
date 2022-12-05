@@ -27,6 +27,9 @@
   when:
     - not ufw_status_result.stdout is search("9616/tcp.*ALLOW IN.*Anywhere")
 
+- name: open ssh port
+  command: ufw allow ssh
+    
 - name: open p2p port
   command: ufw allow {{ p2p_port }}/tcp
   when:
