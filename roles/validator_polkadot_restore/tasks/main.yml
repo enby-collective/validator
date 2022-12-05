@@ -13,6 +13,9 @@
   set_fact:
     db_dest_path: "{{ chain_path | default('/home/polkadot/.local/share/polkadot')  }}/chains/{{ polkadot_network_id }}"
 
+- name: Create target directory
+  file: path={{ db_dest_path }} state=directory mode=0755
+
 - name: download db
   get_url:
     url: '{{ polkadot_db_snapshot_url }}'
@@ -20,6 +23,17 @@
     mode: '0700'
     owner: 'polkadot'
     group: 'polkadot'
+
+- name: set folder permission for db_dest_path
+  file:
+    path: '{{ db_dest_path }}'
+    state: directory
+    owner: polkadot
+    group: polkadot
+    recurse: true
+    mode: 0755
+  when: db_dest_path is defined
+  changed_when: false
 
 - name: stop polkadot service
   systemd:
