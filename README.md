@@ -19,7 +19,7 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 - `gh clone https://github.com/enby-collective/polkadot-validator`
 - `cd polkadot-validator`
 - `cp inventory.sample inventory`
-- edit `inventory` file like this: \
+- edit `inventory` file like this: 
 
   ```
     [kusama1]
