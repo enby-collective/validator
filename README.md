@@ -1,4 +1,4 @@
-#Setup instructions for Validators provided by enby collective (incomplete!)
+# Setup instructions for Validators provided by enby collective (incomplete!)
 
 ## Prepare your validator
 
