@@ -1,5 +1,5 @@
-location /node_exporter {
-      auth_basic "data";
+location /process_exporter {
+      auth_basic '{{ data_user }}';
       auth_basic_user_file /etc/nginx/conf.d/proxies/data.htpasswd;
       proxy_pass http://127.0.0.1:9256;
 }

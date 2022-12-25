@@ -54,3 +54,16 @@
     daemon_reload: yes
     enabled: yes
   changed_when: false
+
+- name: Install nginx site for letsencrypt requests
+  template:
+    src: process-exporter-nginx.j2
+    dest: /etc/nginx/applications/process_exporter.conf
+
+- name: restart nginx service
+  systemd:
+    name: nginx
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  changed_when: false

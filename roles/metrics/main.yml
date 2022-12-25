@@ -1,7 +1,7 @@
 - name: Install nginx site for letsencrypt requests
   template:
-    src: node-exporter-nginx.j2
-    dest: /etc/nginx/applications/node_exporter.conf
+    src: metrics-nginx.j2
+    dest: /etc/nginx/applications/metrics.conf
 
 - name: restart nginx service
   systemd:
