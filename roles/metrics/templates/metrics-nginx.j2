@@ -1,5 +1,5 @@
 location /metrics {
       auth_basic '{{ data_user }}';
       auth_basic_user_file /etc/nginx/conf.d/proxies/data.htpasswd;
-      proxy_pass http://127.0.0.1:9616;
+      proxy_pass http://127.0.0.1:9616/metrics;
 }
