@@ -17,9 +17,11 @@
   become: true
   gather_facts: false
   roles:
-    # - validator_polkadot_prepare
-    # - process_exporter
-    # - node_exporter
+    - validator_polkadot_prepare
+    - validator_polkadot_lets_encrypt
+    - process_exporter
+    - node_exporter
+    - metrics
     - promtail
     # - validator_polkadot_update
     # - validator_polkadot_restore

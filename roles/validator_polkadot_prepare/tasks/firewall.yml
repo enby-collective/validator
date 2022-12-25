@@ -10,26 +10,36 @@
   register: ufw_status_result
   changed_when: False
 
-- name: open node_exporter port
-  command: ufw allow 9100/tcp
-  when:
-    - node_exporter_enabled|default(false)|bool
-    - not ufw_status_result.stdout is search("9100/tcp.*ALLOW IN.*Anywhere")
+# - name: open node_exporter port
+#   command: ufw allow 9100/tcp
+#   when:
+#     - node_exporter_enabled|default(false)|bool
+#     - not ufw_status_result.stdout is search("9100/tcp.*ALLOW IN.*Anywhere")
 
-- name: open process_exporter port
-  command: ufw allow 9256/tcp
-  when:
-    - process_exporter_enabled|default(false)|bool
-    - not ufw_status_result.stdout is search("9256/tcp.*ALLOW IN.*Anywhere")
+# - name: open process_exporter port
+#   command: ufw allow 9256/tcp
+#   when:
+#     - process_exporter_enabled|default(false)|bool
+#     - not ufw_status_result.stdout is search("9256/tcp.*ALLOW IN.*Anywhere")
 
-- name: open polkadot_metrics port
-  command: ufw allow 9616/tcp
-  when:
-    - not ufw_status_result.stdout is search("9616/tcp.*ALLOW IN.*Anywhere")
+# - name: open polkadot_metrics port
+#   command: ufw allow 9616/tcp
+#   when:
+#     - not ufw_status_result.stdout is search("9616/tcp.*ALLOW IN.*Anywhere")
 
 - name: open ssh port
   command: ufw allow ssh
+  # when:
+    # - not ufw_status_result.stdout is search(ssh_port ~ "/tcp.*ALLOW IN.*Anywhere")
     
+- name: open https port
+  command: ufw allow https
+  # when:
+    # - not ufw_status_result.stdout is search(https_port ~ "/tcp.*ALLOW IN.*Anywhere")
+
+- name: open http port
+  command: ufw allow http
+
 - name: open p2p port
   command: ufw allow {{ p2p_port }}/tcp
   when:
