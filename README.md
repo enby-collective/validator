@@ -22,11 +22,11 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 - edit `inventory` file like this: 
 
   ```
-    [kusama1]
-    IP_ADDRESS_VALIDATOR validator_name=NAME_VALIDATOR log_name=kusama1 telemetryUrl=wss://telemetry-backend.w3f.community/submit/
+    [**ask for log_name**]
+    IP_ADDRESS_VALIDATOR validator_name=NAME_VALIDATOR log_name=**ask for log_name** telemetryUrl=wss://telemetry-backend.w3f.community/submit/
 
     [kusama:children]
-    kusama1
+    **ask for log_name**
 
     [validators:children]
     kusama
@@ -49,7 +49,7 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 
 
 ## Start the Ansible setup
-- enter: `ansible-playbook -i inventory polkadot_full_setup.yml -e "target=kusama1"`
+- enter: `ansible-playbook -i inventory polkadot_full_setup.yml -e "target=**ask for log_name**"`
 
 # Polkadot Validation Node Ansible Setup
 
