@@ -35,7 +35,13 @@ Setup instructions for Validators provided by enby collective (incomplete!)
     ansible_user=ansible
     ansible_port=22
     ansible_ssh_private_key_file="~/.ssh/id_rsa"
-    log_monitor=IP_ADDRESS_LOGGING_SERVER
+    log_monitor=monitoring.enby-collective.org
+    loki_user=**ask**
+    loki_password=**ask**
+    domain_name=**dns of your server from Mevspace**
+    data_user=**ask**
+    data_password=**ask**
+    letsencrypt_email=**your mail**
   ```
   
 - update the value of `polkadot_db_snapshot_url` under `group_vars/kusama.yml` with the lates snapshot from https://polkachu.com/snapshots/kusama
