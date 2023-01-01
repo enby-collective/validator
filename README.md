@@ -4,19 +4,32 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 
 ## Prepare your validator
 
--  ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
-- `sudo useradd ansible_user`
-- `sudo usermod -aG sudo ansible_user`
-- `sudo visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`) \
-   add the following last line: \
-   ansible_user ALL=(ALL) NOPASSWD:ALL
-- logout of your validator / shh connection
-- `ssh-copy-id -i /home/achim/.ssh/id_rsa.pub ansible_user@IP_ADDRESS_VALIDATOR`
+- ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
+- Add a new user called `ansible_user` with the command: `sudo useradd ansible_user`
+- Double check that the user was added with the command: `less /etc/passwd`
+- Next we execute the `usermod` command with the `-a`(append) and `-G` (group name) options to add the `ansible_user` to sudoers :
+  ```
+  sudo usermod -aG sudo ansible_user
+  ```
+- Open the `/etc/sudoers` file with the command: `sudo visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`) \
+- Add the following last line:
+  ```
+  ansible_user ALL=(ALL) NOPASSWD:ALL
+  ```
+  so that the `ansible_user` can run some or all command with sudo without the need to enter the account's password every time.
+- Save & Exit the shell
+- Logout of your validator / shh connection
+- Next install the ssh-key on your Validator server as an authorized key. In order to do that, use the command `ssh-copy-id` and specify the public key from the `.ssh` folder of your home directory:
+  ```
+  ssh-copy-id -i ~/.ssh/id_rsa.pub ansible_user@IP_ADDRESS_VALIDATOR`
+  ```
+That way the user `ansible_user` can access the Validator Server without giving a password for each login.
 
 ## Prepare your Ansible setup:
 
-- `sudo apt-get install ansible`
-- `gh clone https://github.com/enby-collective/polkadot-validator`
+- Install Ansible (in Ubuntu Server): `sudo apt-get install ansible`
+- Install `git` in case you do not have it already (Ubuntu Server): `sudo apt install git-all`
+- `git clone https://github.com/enby-collective/polkadot-validator`
 - `cd polkadot-validator`
 - `cp inventory.sample inventory`
 - edit `inventory` file like this: 
