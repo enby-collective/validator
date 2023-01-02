@@ -5,41 +5,52 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 ## Prepare your validator
 
 - ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
-- Add a new user called `ansible_user` with the command: `sudo useradd ansible_user`
-- Double check that the user was added with the command: `less /etc/passwd`
-- Next we execute the `usermod` command with the `-a`(append) and `-G` (group name) options to add the `ansible_user` to sudoers :
+- Add a new user called `ansible` (or with the name of your choice):
   ```
-  sudo usermod -aG sudo ansible_user
+  sudo adduser ansible
   ```
-- Open the `/etc/sudoers` file with the command: `sudo visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`) \
+- Double check that the user was added with the command:
+  ```
+  less /etc/passwd
+  ```
+- Execute the `usermod` command with the `-a`(append) and `-G` (group name) options to add the `ansible` user to sudoers :
+  ```
+  sudo usermod -aG sudo ansible
+  ```
+- Open the `/etc/sudoers` file with the command: `sudo visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`)
 - Add the following last line:
   ```
-  ansible_user ALL=(ALL) NOPASSWD:ALL
+  ansible ALL=(ALL) NOPASSWD:ALL
   ```
-  so that the `ansible_user` can run some or all command with sudo without the need to enter the account's password every time.
+  so that the user called `ansible` can run some or all command with sudo without the need to enter the account's password every time.
 - Save & Exit the shell
-- Logout of your validator / shh connection
-- Next install the ssh-key on your Validator server as an authorized key. In order to do that, use the command `ssh-copy-id` and specify the public key from the `.ssh` folder of your home directory:
+- Logout of your validator (close your ssh connection)
+- Install the ssh-key on your Validator server as an authorized key. In order to do that, use the command `ssh-copy-id` and specify the public key from the `.ssh` folder of your home directory:
   ```
-  ssh-copy-id -i ~/.ssh/id_rsa.pub ansible_user@IP_ADDRESS_VALIDATOR`
+  ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@IP_ADDRESS_OF_YOUR_VALIDATOR
   ```
-That way the user `ansible_user` can access the Validator Server without giving a password for each login.
+  That way the user `ansible` user can access the Validator Server without giving a password for each login.
 
 ## Prepare your Ansible setup:
 
-- Install Ansible (in Ubuntu Server): `sudo apt-get install ansible`
-- Install `git` in case you do not have it already (Ubuntu Server): `sudo apt install git-all`
-- `git clone https://github.com/enby-collective/polkadot-validator`
+- On your local machine install Ansible:
+  - For Ubuntu: `sudo apt-get install ansible`
+  - For Macos (if you already have Homebrew installed): `brew install ansible`
+- Install `git` in case you do not have it already: `sudo apt install git-all`
+- Clone the repository:
+  ```
+  git clone https://github.com/enby-collective/polkadot-validator
+  ```
 - `cd polkadot-validator`
 - `cp inventory.sample inventory`
-- edit `inventory` file like this: 
+- Edit `inventory` file (e.g. with `vim inventory` command) as follows: 
 
   ```
-    [**ask for log_name**]
-    IP_ADDRESS_VALIDATOR validator_name=NAME_VALIDATOR log_name=**ask for log_name** telemetryUrl=wss://telemetry-backend.w3f.community/submit/
+    [**ASK_FOR_LOG_NAME**]
+    **IP_ADDRESS_OF_YOUR_VALIDATOR** validator_name=**YOUR_VALIDATOR_NAME** log_name=**ASK_FOR_LOG_NAME** telemetryUrl=wss://telemetry-backend.w3f.community/submit/
 
     [kusama:children]
-    **ask for log_name**
+    **ASK_FOR_LOG_NAME**
 
     [validators:children]
     kusama
@@ -49,20 +60,24 @@ That way the user `ansible_user` can access the Validator Server without giving 
     ansible_port=22
     ansible_ssh_private_key_file="~/.ssh/id_rsa"
     log_monitor=monitoring.enby-collective.org
-    loki_user=**ask**
-    loki_password=**ask**
-    domain_name=**dns of your server from Mevspace**
-    data_user=**ask**
-    data_password=**ask**
-    letsencrypt_email=**your mail**
+    loki_user=**ASK_FOR_LOKI_USER**
+    loki_password=**ASK_FOR_LOKI_PASSWORD**
+    domain_name=**DNS_OF_YOUR_SERVER_FROM_YOUR_PROVIDER(e.g.mevspace)**
+    data_user=**ASK_FOR_DATA_USER**
+    data_password=**ASK_FOR_DATA_PASSWORD**
+    letsencrypt_email=**YOUR_EMAIL**
   ```
-  
-- update the value of `polkadot_db_snapshot_url` under `group_vars/kusama.yml` with the lates snapshot from https://polkachu.com/snapshots/kusama
-- update the value of `polkadot_version` under `group_vars/validators.yml` with the latest polkadot version
+  and replace all text that is between double asterisks (the double asterisks included).
+- Update the value of `polkadot_db_snapshot_url` under `group_vars/kusama.yml` with the latest snapshot from https://polkachu.com/snapshots/kusama
+- Update the value of `polkadot_version` under `group_vars/validators.yml` with the latest polkadot version.
 
 
 ## Start the Ansible setup
-- enter: `ansible-playbook -i inventory polkadot_full_setup.yml -e "target=**ask for log_name**"`
+- On your local machine, execute the following command:
+  ```
+  ansible-playbook -i inventory polkadot_full_setup.yml -e "target=**ASK_FOR_LOG_NAME**"
+  ```
+  after replacing the `**ASK_FOR_LOG_NAME**` with the log_name you put in the `inventory` file above.
 
 # Polkadot Validation Node Ansible Setup
 
