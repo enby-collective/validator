@@ -1,8 +1,13 @@
 # Setup instructions
 
-Setup instructions for Validators provided by enby collective (incomplete!)
+Setup instructions for Validators provided by Enby Collective (incomplete!)
 
-## Prepare your validator
+## Prerequisites
+- You are already renting a dedicated bare metal server from a provider (e.g. mevspace)
+- You already generated an SSH Key Pair on your local machine (the machine from where you will be running the ansible script)
+- You have already setup your ssh connection to your server
+
+## Prepare your Validator
 
 - ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
 - Add a new user called `ansible` (or with the name of your choice):
@@ -25,6 +30,8 @@ Setup instructions for Validators provided by enby collective (incomplete!)
   so that the user called `ansible` can run some or all command with sudo without the need to enter the account's password every time.
 - Save & Exit the shell
 - Logout of your validator (close your ssh connection)
+
+## Copy your ssh public key
 - Install the ssh-key on your Validator server as an authorized key. In order to do that, use the command `ssh-copy-id` and specify the public key from the `.ssh` folder of your home directory:
   ```
   ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@IP_ADDRESS_OF_YOUR_VALIDATOR
@@ -33,7 +40,7 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 
 ## Prepare your Ansible setup:
 
-- On your local machine install Ansible:
+- On your local machine (the machine where your private key is installed) install Ansible:
   - For Ubuntu: `sudo apt-get install ansible`
   - For Macos (if you already have Homebrew installed): `brew install ansible`
 - Install `git` in case you do not have it already: `sudo apt install git-all`
@@ -46,11 +53,11 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 - Edit `inventory` file (e.g. with `vim inventory` command) as follows: 
 
   ```
-    [**ASK_FOR_LOG_NAME**]
-    **IP_ADDRESS_OF_YOUR_VALIDATOR** validator_name=**YOUR_VALIDATOR_NAME** log_name=**ASK_FOR_LOG_NAME** telemetryUrl=wss://telemetry-backend.w3f.community/submit/
+    [**ASK_FOR_TARGET_NAME**]
+    **IP_ADDRESS_OF_YOUR_VALIDATOR** validator_name=**YOUR_VALIDATOR_NAME** log_name=**YOUR_VALIDATOR_NAME** telemetryUrl=wss://telemetry-backend.w3f.community/submit/
 
     [kusama:children]
-    **ASK_FOR_LOG_NAME**
+    **ASK_FOR_TARGET_NAME**
 
     [validators:children]
     kusama
@@ -63,8 +70,8 @@ Setup instructions for Validators provided by enby collective (incomplete!)
     loki_user=**ASK_FOR_LOKI_USER**
     loki_password=**ASK_FOR_LOKI_PASSWORD**
     domain_name=**DNS_OF_YOUR_SERVER_FROM_YOUR_PROVIDER(e.g.mevspace)**
-    data_user=**ASK_FOR_DATA_USER**
-    data_password=**ASK_FOR_DATA_PASSWORD**
+    data_user=**ASK_FOR_PROMETHEUS_USER**
+    data_password=**ASK_FOR_PROMETHEUS_PASSWORD**
     letsencrypt_email=**YOUR_EMAIL**
   ```
   and replace all text that is between double asterisks (the double asterisks included).
@@ -75,9 +82,9 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 ## Start the Ansible setup
 - On your local machine, execute the following command:
   ```
-  ansible-playbook -i inventory polkadot_full_setup.yml -e "target=**ASK_FOR_LOG_NAME**"
+  ansible-playbook -i inventory polkadot_full_setup.yml -e "target=**ASK_FOR_TARGET_NAME**"
   ```
-  after replacing the `**ASK_FOR_LOG_NAME**` with the log_name you put in the `inventory` file above.
+  after replacing the `**ASK_FOR_TARGET_NAME**` to be the same as the one you set in the `inventory` file above.
 
 # Polkadot Validation Node Ansible Setup
 
