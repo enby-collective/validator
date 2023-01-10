@@ -1,63 +1,32 @@
 # Setup instructions
 
-Setup instructions for Validators provided by Enby Collective (incomplete!)
+Setup instructions for Validators provided by enby collective (incomplete!)
 
-## Prerequisites
-- You are already renting a dedicated bare metal server from a provider (e.g. mevspace)
-- You already generated an SSH Key Pair on your local machine (the machine from where you will be running the ansible script)
-- You have already setup your ssh connection to your server
+## Prepare your validator
 
-## Prepare your Validator
-
-- ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
-- Add a new user called `ansible` (or with the name of your choice):
-  ```
-  sudo adduser ansible
-  ```
-- Double check that the user was added with the command:
-  ```
-  less /etc/passwd
-  ```
-- Execute the `usermod` command with the `-a`(append) and `-G` (group name) options to add the `ansible` user to sudoers :
-  ```
-  sudo usermod -aG sudo ansible
-  ```
-- Open the `/etc/sudoers` file with the command: `sudo visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`)
-- Add the following last line:
-  ```
-  ansible ALL=(ALL) NOPASSWD:ALL
-  ```
-  so that the user called `ansible` can run some or all command with sudo without the need to enter the account's password every time.
-- Save & Exit the shell
-- Logout of your validator (close your ssh connection)
-
-## Copy your ssh public key
-- Install the ssh-key on your Validator server as an authorized key. In order to do that, use the command `ssh-copy-id` and specify the public key from the `.ssh` folder of your home directory:
-  ```
-  ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@IP_ADDRESS_OF_YOUR_VALIDATOR
-  ```
-  That way the user `ansible` user can access the Validator Server without giving a password for each login.
+-  ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
+- `sudo useradd ansible_user`
+- `sudo usermod -aG sudo ansible_user`
+- `sudo visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`) \
+   add the following last line: \
+   ansible_user ALL=(ALL) NOPASSWD:ALL
+- logout of your validator / shh connection
+- `ssh-copy-id -i /home/achim/.ssh/id_rsa.pub ansible_user@IP_ADDRESS_VALIDATOR`
 
 ## Prepare your Ansible setup:
 
-- On your local machine (the machine where your private key is installed) install Ansible:
-  - For Ubuntu: `sudo apt-get install ansible`
-  - For Macos (if you already have Homebrew installed): `brew install ansible`
-- Install `git` in case you do not have it already: `sudo apt install git-all`
-- Clone the repository:
-  ```
-  git clone https://github.com/enby-collective/polkadot-validator
-  ```
+- `sudo apt-get install ansible`
+- `gh clone https://github.com/enby-collective/polkadot-validator`
 - `cd polkadot-validator`
 - `cp inventory.sample inventory`
-- Edit `inventory` file (e.g. with `vim inventory` command) as follows: 
+- edit `inventory` file like this: 
 
   ```
-    [**ASK_FOR_TARGET_NAME**]
-    **IP_ADDRESS_OF_YOUR_VALIDATOR** validator_name=**YOUR_VALIDATOR_NAME** log_name=**YOUR_VALIDATOR_NAME** telemetryUrl=wss://telemetry-backend.w3f.community/submit/
+    [kusama1]
+    IP_ADDRESS_VALIDATOR validator_name=NAME_VALIDATOR log_name=kusama1 telemetryUrl=wss://telemetry-backend.w3f.community/submit/
 
     [kusama:children]
-    **ASK_FOR_TARGET_NAME**
+    kusama1
 
     [validators:children]
     kusama
@@ -66,25 +35,15 @@ Setup instructions for Validators provided by Enby Collective (incomplete!)
     ansible_user=ansible
     ansible_port=22
     ansible_ssh_private_key_file="~/.ssh/id_rsa"
-    log_monitor=monitoring.enby-collective.org
-    loki_user=**ASK_FOR_LOKI_USER**
-    loki_password=**ASK_FOR_LOKI_PASSWORD**
-    domain_name=**DNS_OF_YOUR_SERVER_FROM_YOUR_PROVIDER(e.g.mevspace)**
-    data_user=**ASK_FOR_PROMETHEUS_USER**
-    data_password=**ASK_FOR_PROMETHEUS_PASSWORD**
-    letsencrypt_email=**YOUR_EMAIL**
+    log_monitor=IP_ADDRESS_LOGGING_SERVER
   ```
-  and replace all text that is between double asterisks (the double asterisks included).
-- Update the value of `polkadot_db_snapshot_url` under `group_vars/kusama.yml` with the latest snapshot from https://polkachu.com/snapshots/kusama
-- Update the value of `polkadot_version` under `group_vars/validators.yml` with the latest polkadot version.
+  
+- update the value of `polkadot_db_snapshot_url` under `group_vars/kusama.yml` with the lates snapshot from https://polkachu.com/snapshots/kusama
+- update the value of `polkadot_version` under `group_vars/validators.yml` with the latest polkadot version
 
 
 ## Start the Ansible setup
-- On your local machine, execute the following command:
-  ```
-  ansible-playbook -i inventory polkadot_full_setup.yml -e "target=**ASK_FOR_TARGET_NAME**"
-  ```
-  after replacing the `**ASK_FOR_TARGET_NAME**` to be the same as the one you set in the `inventory` file above.
+- enter: `ansible-playbook -i inventory polkadot_full_setup.yml -e "target=kusama1"`
 
 # Polkadot Validation Node Ansible Setup
 

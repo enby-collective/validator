@@ -23,5 +23,5 @@
     - node_exporter
     - metrics
     - promtail
-    - validator_polkadot_update
-    - validator_polkadot_restore
+    # - validator_polkadot_update
+    # - validator_polkadot_restore
