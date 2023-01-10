@@ -16,6 +16,7 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 ## Prepare your Ansible setup:
 
 - `sudo apt-get install ansible`
+- `ansible-galaxy collection install community.general`
 - `gh clone https://github.com/enby-collective/polkadot-validator`
 - `cd polkadot-validator`
 - `cp inventory.sample inventory`
