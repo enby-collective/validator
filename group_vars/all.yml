@@ -1,16 +1,16 @@
 # Node Exporter
 node_exporter_enabled: true
-node_exporter_version: '1.1.2'
-node_exporter_checksum: '8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d'
+node_exporter_version: '1.5.0'
+node_exporter_checksum: 'af999fd31ab54ed3a34b9f0b10c28e9acee9ef5ac5a5d5edfdde85437db7acbb'
 
 # Process Exporter
 process_exporter_enabled: true
-process_exporter_version: '0.7.5'
-process_exporter_checksum: '27f133596205654a67b4a3e3af11db640f7d4609a457f48c155901835bd349c6'
+process_exporter_version: '0.7.10'
+process_exporter_checksum: '52503649649c0be00e74e8347c504574582b95ad428ff13172d658e82b3da1b5'
 
 # Promtail
-promtail_version: 2.2.1
-promtail_checksum: 40d8d414b44baa78c5010cb7575d74eea035b6b00adb78e9676a045d6730a16f
+promtail_version: 2.7.1
+promtail_checksum: 'aeccf5c2ac067210e7737ab408f1e36cd55be4dfc521a56f0cc5ee01582e71d6'
 
 # Digital Ocean Space for Snapshots (You can ignore if you do not plan to take snapshot from the node)
 snapshot_endpoint: 'https://fra1.digitaloceanspaces.com'
