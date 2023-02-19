@@ -5,7 +5,7 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 ## Prepare your validator
 
 -  ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
-- `adduse ansible_user`
+- `adduser ansible_user`
 - `usermod -aG sudo ansible_user`
 - `visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`) \
    add the following last line: \
