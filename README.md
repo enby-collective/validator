@@ -5,11 +5,11 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 ## Prepare your validator
 
 -  ssh into your validator: `ssh root@IP_ADDRESS_VALIDATOR`
-- `adduser ansible_user`
-- `usermod -aG sudo ansible_user`
+- `adduser ansible`
+- `usermod -aG sudo ansible`
 - `visudo` (alternatively `sudo ap-get install nano && sudo Editor=nano visudo`) \
    add the following last line: \
-   ansible_user ALL=(ALL) NOPASSWD:ALL
+   ansible ALL=(ALL) NOPASSWD:ALL
 - logout of your validator / shh connection
 - `ssh-copy-id -i /home/achim/.ssh/id_rsa.pub ansible_user@IP_ADDRESS_VALIDATOR`
 
