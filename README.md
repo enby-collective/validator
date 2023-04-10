@@ -13,7 +13,7 @@ Setup instructions for Validators provided by enby collective (incomplete!)
    ansible ALL=(ALL) NOPASSWD:ALL
    ```
 - logout of your validator / shh connection
-- `ssh-copy-id -i /home/achim/.ssh/id_rsa.pub ansible@IP_ADDRESS_VALIDATOR`
+- `ssh-copy-id -i ~/.ssh/id_rsa.pub ansible@IP_ADDRESS_VALIDATOR`
 
 ## Prepare your Ansible setup:
 
