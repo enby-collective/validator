@@ -19,31 +19,17 @@ Setup instructions for Validators provided by enby collective (incomplete!)
 
 - `sudo apt-get install ansible`
 - `ansible-galaxy collection install community.general`
-- `gh clone https://github.com/enby-collective/polkadot-validator`
-- `cd polkadot-validator`
+- `gh clone https://github.com/enby-collective/validator.git`
+- `cd validator`
 - `cp inventory.sample inventory`
-- edit `inventory` file like this: 
-
-  ```
-    [kusama1]
-    IP_ADDRESS_VALIDATOR validator_name=NAME_VALIDATOR log_name=kusama1 telemetryUrl=wss://telemetry-backend.w3f.community/submit/
-
-    [kusama:children]
-    kusama1
-
-    [validators:children]
-    kusama
-
-    [all:vars]
-    ansible_user=ansible
-    ansible_port=22
-    ansible_ssh_private_key_file="~/.ssh/id_rsa"
-    log_monitor=IP_ADDRESS_LOGGING_SERVER
-  ```
-  
-- update the value of `polkadot_db_snapshot_url` under `group_vars/kusama.yml` with the lates snapshot from https://polkachu.com/snapshots/kusama
-- update the value of `polkadot_version` under `group_vars/validators.yml` with the latest polkadot version
+- edit your `inventory` file and update it as follows : 
+   - replace the `IP_ADDRESS_VALIDATOR` with the IP of your server
+   - in the `domain_name` add the Hostname of your server
+   - in the `letsencrypt_email` add your email
+   - give your assigned values in `validator_name`, `log_name`, under `[kusama:children]`, `loki_password` and `data_password`
+- Open the `group_vars/kusama.yml` file and update the value of `polkadot_db_snapshot_url` so that it reflects the latest snapshot from https://polkachu.com/snapshots/kusama
+- Open the `group_vars/validators.yml` file and update the value of the `polkadot_version` with the version that correspond to the [latest polkadot release](https://github.com/paritytech/polkadot/releases).
 
 
 ## Start the Ansible setup
-- enter: `ansible-playbook -i inventory polkadot_full_setup.yml -e "target=kusama1"`
+- Before running the command `ansible-playbook -i inventory polkadot_full_setup.yml -e "target=kusama1"` make sure to update the value of `target` to the kusama name that corresponds to your server, e.g. kusama2 or kusama3, etc.
